@@ -31,7 +31,7 @@ Criar codego
 			Memorize positions do CHEST e EXIT
 			Agente burrao n sabe nada no comeco
 			desviar de HOLES
-			se cair no HOLE = Shindeiru
+			se cair no HOLE = Shindeiru  Botar o toastie do mk
 			JUMP = DESVIAR = andar 2 celulas por vez (CONFIRMAR)
 			MOVIMENTACAO = ESTRELA (em direcao aos baus e porta e saco se ver pela parede)
 			
