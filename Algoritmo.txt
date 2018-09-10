@@ -57,6 +57,12 @@ Ambiente --> geraMapa()
 
 Agente --> geraAgente()
 
+fazer funfar
+
+
+mostrar bonito a execucao
+
+
 ...
 
 }
