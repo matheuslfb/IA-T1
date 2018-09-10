@@ -1,0 +1,69 @@
+Ambiente(){
+	Metodo gera mapa{
+		Gera MAPA = Matriz 10x10
+		Usa Parede(classe) metodo Paredao() [a q fica dos lados]
+		Gera saida no paredao (talvez fique no metodo acima)
+		Usa Baus(classe) gerar() //ler mapa e posicionar aonde seja possivel
+		Usa Parede metodo paredes() [as q ficam no meio do mapa] //vai ler o mapa e posicionar de maneira que deixe completar 
+		Usa Buracos(classe) gerar() //ler mapa e posicionar buracos aonde seja possivel e que deixe completar(n pode ser vizinho de outro buraco)
+		Usa um random e seleciona um lugar para ser o spawn point do mapa em questao
+		//em vez de fazer classe (pros baus parede etc) so faz metodo na Ambiente.
+		
+		Retorna Mapa
+		}
+		
+		
+		
+}
+Agente(){
+//acoes
+
+//observar
+
+//andar
+
+//andar ate baus
+
+//andar ate porta
+		(se sair 30 pontos)
+
+
+//recolher --> cada saco de dinheiro NAO pode ser misturado 
+			(10 pontos * moeda)
+			
+//depositar --> usar genetico para distribuir os sacos nos baus ate ficar igual
+				NUMERO MAX == se chegar ele tenta abrir a porta e Game over
+				caso ache uma resposta antes do numero max tenta a abrir a porta e GG
+					**se abrir a porta --> (300 pontos)
+					exibir
+
+//memorizar (gera matriz que ao observar memoriza as posicoes em volta)
+			//se ja achou 40 moedas E sabe aonde ta a porta
+			//tenta dividir os sacos nos baus
+			//se nao conseguiu volta a procurar moedas
+			
+//pular //perguntar pra prof.
+		(30 pontos)
+//decisao/Analisar // decide entre as opcoes de cima (melhor opc) baseado na observacao, qnt de moedas e se sabe a posicao dos baus/porta
+
+}
+
+
+
+
+
+Simulacao(){
+Ambiente --> geraMapa()
+
+Agente --> geraAgente()
+
+
+fazer funfar
+
+
+mostrar bonito a execucao
+
+
+...
+
+}
