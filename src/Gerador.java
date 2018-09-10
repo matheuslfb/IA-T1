@@ -124,6 +124,8 @@ public class Gerador {
 				// CASO 4 ou 5 faz pra Direita pq eh sucesso
 			}
 		}
+		//dps do for ANALISAR
+		//SE DEU CACA usar tratamento da folha
 
 	}
 
