@@ -9,23 +9,27 @@ public class Gerador {
 			for (int i = 0; i < base.length; i++) {
 				base[0][i] = 1;
 			}
+			base[0][ran.nextInt(base.length)] = 6; //garante que a saida vai estar em no paredão
 		}
 		if (op == 1) {// preenche a direita
 			for (int i = 0; i < base.length; i++) {
 				base[i][9] = 1;
 			}
+			base[ran.nextInt(base.length)][9] = 6;
 		}
 
 		if (op == 2) {// preenche esquerda
 			for (int i = 0; i < base.length; i++) {
 				base[i][0] = 1;
 			}
+			base[ran.nextInt(base.length)][0] = 6;
 		}
 
 		if (op == 3) {// preenche em baixo
 			for (int i = 0; i < base.length; i++) {
 				base[9][i] = 1;
 			}
+			base[9][ran.nextInt(base.length)] = 6;
 		}
 
 	}
