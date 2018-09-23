@@ -6,8 +6,11 @@ public class Main {
 
 		g.GeraParedao(a.base);
 		// g.GeraParede(a.base);
-		g.GeraParede2(a.base);
-
+	//	g.GeraParede2(a.base);
+		g.GeraPosSacoMoedas(a.base);
+		g.geraburacos(a.base);
+		g.geraBaus(a.base);
+		g.geraSpawn(a.base);
 		a.printAmbiente(a.base);
 	}
 }
