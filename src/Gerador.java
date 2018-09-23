@@ -80,6 +80,18 @@ public class Gerador {
 			do {
 				posX = ran.nextInt(10);
 				posY = ran.nextInt(10);
+				if(posX> 8) {
+					posX =8;
+				}
+				if(posX< 2) {
+					posX =2;
+				}
+				if(posY> 8) {
+					posY =8;
+				}
+				if(posY< 2) {
+					posY =2;
+				}
 			} while (base[posX][posY] != 0 && (base[posX + 1][posY] == 3 || base[posX - 1][posY] == 3
 					|| base[posX][posY + 1] == 3 || base[posX][posY - 1] == 3));
 			// posicao
