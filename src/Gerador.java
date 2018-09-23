@@ -9,7 +9,7 @@ public class Gerador {
 			for (int i = 0; i < base.length; i++) {
 				base[0][i] = 1;
 			}
-			base[0][ran.nextInt(base.length)] = 6; //garante que a saida vai estar em no paredão
+			base[0][ran.nextInt(base.length)] = 6; // garante que a saida vai estar em no paredÃ£o
 		}
 		if (op == 1) {// preenche a direita
 			for (int i = 0; i < base.length; i++) {
@@ -34,193 +34,26 @@ public class Gerador {
 
 	}
 
-	public void GeraParede(int[][] base) {
-
+	public void GeraParede2(int[][] base) {
 		int[][] amigo = new int[10][10];
-		clone(amigo, base);
-		// FOR 4 vezes
-		for (int o = 0; o < 4; o++) {// gera 4 paredes aleatorias
+		clone(base, amigo);
+		if ((amigo[0][0] == 1 && amigo[0][9] == 1) || (amigo[9][0] == 1 && amigo[9][1] == 1)) {
 
-			int verhor = ran.nextInt(1);
-			int xAmigo = ran.nextInt(10);
-			int yAmigo = ran.nextInt(10);
-			// 0 = vertical
-			// 1 = horizontal
-			// Verificar qual variacao do paredao
-			// em cima
-			if (amigo[0][0] == 1 && amigo[0][9] == 1) {
-				// vertical
-				if (verhor == 0) {
-					// 0-4 6-9
-					if (xAmigo <= 4) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
+			// gera parede usando geraParedeCB
+			// ele so devolte a lista tem q pegar e colocar
+			// ignora o tratamento de colisoes por enquanto
+		} else {
+			// gera parede usando geraParedeCB
 
-					} else if (xAmigo >= 6) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo--;
-						}
-					}
-
-					// CASO 5 faz pra cima
-					// horizontal
-				} else {
-					// 0-3 6-9
-					if (yAmigo <= 3) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					} else if (yAmigo >= 6) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo--;
-						}
-					}
-					// CASO 4 ou 5 faz pra Direita pq eh sucesso
-				}
-			}
-			// direita
-			if (amigo[0][9] == 1 && amigo[1][9] == 1) {
-				if (verhor == 0) {
-					// 0-3 6-9
-					if (xAmigo <= 3) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
-					} else if (xAmigo >= 6) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo--;
-						}
-					} else {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
-					}
-					// CASO 4 ou 5 faz pra cima
-					// horizontal
-				} else {
-					// 0-3 5-9
-					if (yAmigo <= 3) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					} else if (yAmigo >= 5) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo--;
-						}
-					} else {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					}
-					// CASO 4 faz pra Direita pq eh sucesso
-				}
-
-			}
-			// esquerda
-			if (amigo[0][0] == 1 && amigo[1][0] == 1) {
-				if (verhor == 0) {
-					// 0-3 6-9
-					if (xAmigo <= 3) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
-					} else if (xAmigo >= 6) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo--;
-						}
-					} else {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
-					}
-					// CASO 4 ou 5 faz pra cima
-				} else {
-					// 0-4 6-9
-					if (yAmigo <= 4) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					} else if (yAmigo >= 6) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo--;
-						}
-					} else {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					}
-					// CASO 4 ou 5 faz pra Direita pq eh sucesso
-				}
-			}
-			// baixo
-			if (amigo[9][0] == 1 && amigo[9][1] == 1) {
-				if (verhor == 0) {
-					// 0-3 5-9
-					if (xAmigo <= 3) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
-					} else if (xAmigo >= 5) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo--;
-						}
-					} else {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							xAmigo++;
-						}
-					}
-					// CASO 4 ou 5 faz pra cima
-				} else {
-					// 0-3 6-9
-					if (yAmigo <= 3) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					} else if (yAmigo >= 6) {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo--;
-						}
-					} else {
-						for (int i = 0; i < 5; i++) {
-							amigo[xAmigo][yAmigo] = 2;
-							yAmigo++;
-						}
-					}
-					// CASO 4 ou 5 faz pra Direita pq eh sucesso
-				}
-			}
 		}
-		//verificar colisoes e extremos
-		// SE DEU CACA usar tratamento da folha
-		
-		
+
+		clone(amigo, base);
 	}
-	public int colisoes(int[][]base){
-		
+
+	public int colisoes(int[][] base) {
+
 		return 0;
-		
+
 	}
 
 	public void clone(int[][] base, int[][] amigo) {
