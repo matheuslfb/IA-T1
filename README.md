@@ -15,8 +15,8 @@ Para abrir a porta de saída é necessário distribuir harmonicamente, nos baús
 
 ## TO-DO
 - [X] Criar github
-- [ ] Criar maquina de automatos
-- [ ] Criar codego:	
+- [X] Criar maquina de automatos
+- [ ] Criar codego: (em andamento)	
 	
 		Ambiente --> cria ambiente 10x10 (Genetico)
 			Paredao(saida[em qqr parte],extremos)
