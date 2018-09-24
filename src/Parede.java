@@ -94,16 +94,12 @@ public class Parede {
 				xEnd = xStart;
 				p = new Parede(xStart, yStart, xEnd, yEnd);
 				lista.add(p);
-				posX = ran.nextInt(9);
-				posY = ran.nextInt(9);
 			}
 			if (lado == 1) {
 				yEnd = yStart;
 				xEnd = xStart + 5;
 				p = new Parede(xStart, yStart, xEnd, yEnd);
 				lista.add(p);
-				posX = ran.nextInt(9);
-				posY = ran.nextInt(9);
 			}
 		}
 
