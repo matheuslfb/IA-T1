@@ -42,6 +42,24 @@ public class Ambiente {
 		printAmbiente(base);
 	}
 
+	public int tamSacoMoedas() {
+		int tam = 0;
+		for (int i = 0; i < dindin.size(); i++) {
+			tam++;
+		}
+		return tam;
+	}
+
+	public int numeroRandom() {
+		r = new Random();
+		int val = 0;
+		int tam = tamSacoMoedas();
+
+		val = r.nextInt(tam);
+
+		return val;
+	}
+
 	public void pegaSaco(int[][] viAge, ArrayList<SacoMoeda> dindinAux) {
 		// olha a posicao do amigo
 		// ve se tem saco na aux
@@ -51,15 +69,17 @@ public class Ambiente {
 		// remove do mapaAux do agente
 		// printa q pegou saco mostra quantidade
 		// segue a vida
-		int qnt = dindin.size();
-		int val = 0;
+
+		// int qnt = dindin.size();
+		int pos = 0;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (base[i][j] == 8) {
 					if (baseAux[i][j] == 4) {
-						val = r.nextInt(qnt); // pega pos random da lista de sacos
-						dindinAux.add(dindin.get(val));
-						dindin.remove(val);
+						// val = r.nextInt(qnt); // pega pos random da lista de sacos
+						pos = numeroRandom();
+						dindinAux.add(dindin.get(pos));
+						dindin.remove(pos);
 						viAge[i][j] = 9;
 						baseAux[i][j] = 9;// retira da aux que tem um saco ali
 						System.out.println("Pegou saco de dinheiro");
@@ -72,45 +92,79 @@ public class Ambiente {
 	}
 
 	public void anda(String op, int[][] viAge) {
+		boolean verificador = false;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				if (base[i][j] == 8) {
-					if (op.equals("d")) {
-						if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
-							base[i][j] = 5;
-						} else {
-							base[i][j] = 9;
+					try {
+						if (op.equals("d")) {
+							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
+								base[i][j] = 5;
+							} else {
+								base[i][j] = 9;
+							}
+							base[i][j + 1] = 8;
+							viAge[i][j + 1] = 8;
+							System.out.println("Agente andou para Direita");
+
+							break;
 						}
-						base[i][j + 1] = 8;
-						viAge[i][j + 1] = 8;
-						System.out.println("Agente andou para Direita");
-						break;
-					} else if (op.equals("e")) {
+						verificador = true;
+					} catch (Exception e) {
+						System.out.println("deu ruim");
 
-						if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
-							base[i][j] = 5;
-						} else {
-							base[i][j] = 9;
+						break;
+
+					}
+					try {
+						if (op.equals("e")) {
+
+							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
+								base[i][j] = 5;
+							} else {
+								base[i][j] = 9;
+							}
+
+							base[i][j - 1] = 8;
+							viAge[i][j - 1] = 8;
+							System.out.println("Agente andou para Esquerda");
+
+							break;
 						}
 
-						base[i][j - 1] = 8;
-						viAge[i][j - 1] = 8;
-						System.out.println("Agente andou para Esquerda");
-						break;
-					} else if (op.equals("c")) {
+					} catch (Exception x) {
+						System.out.println("deu ruim");
 
-						if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
-							base[i][j] = 5;
-						} else {
-							base[i][j] = 9;
+						break;
+
+					}
+					try {
+						if (op.equals("c")) {
+
+							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd
+														// sai
+								base[i][j] = 5;
+							} else {
+								base[i][j] = 9;
+							}
+							base[i - 1][j] = 8;
+							viAge[i - 1][j] = 8;
+							System.out.println("Agente andou para Cima");
+
+							break;
 						}
-						base[i - 1][j] = 8;
-						viAge[i - 1][j] = 8;
-						System.out.println("Agente andou para Cima");
-						break;
-					} else if (op.equals("b")) {
+						verificador = true;
+					} catch (Exception y) {
+						System.out.println("deu ruim");
 
-						if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
+						break;
+
+					}
+					// if (op.equals("b"))
+
+					try {
+						if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd
+													// sai
 							base[i][j] = 5;
 						} else {
 							base[i][j] = 9;
@@ -118,14 +172,28 @@ public class Ambiente {
 						base[i + 1][j] = 8;
 						viAge[i + 1][j] = 8;
 						System.out.println("Agente andou para Baixo");
+						verificador = true;
+						break;
+
+					} catch (Exception z) {
+						System.out.println("deu ruim");
+
 						break;
 
 					}
+				}
+				if (verificador == true) {
+
 					break;
 				}
+			}
 
+			if (verificador == true) {
+
+				break;
 			}
 		}
+
 	}
 
 	public void deposita() {
@@ -268,38 +336,55 @@ public class Ambiente {
 	public void populaSacos() {
 		// guardar essa info
 		SacoMoeda saco = new SacoMoeda(10);
+		SacoMoeda saco1 = new SacoMoeda(90);
+		SacoMoeda saco2 = new SacoMoeda(3);
+		SacoMoeda saco3 = new SacoMoeda(96);
+		SacoMoeda saco4 = new SacoMoeda(92);
+		SacoMoeda saco5 = new SacoMoeda(2);
+		SacoMoeda saco6 = new SacoMoeda(90);
+		SacoMoeda saco7 = new SacoMoeda(50);
+		SacoMoeda saco8 = new SacoMoeda(50);
+		SacoMoeda saco9 = new SacoMoeda(33);
+		SacoMoeda saco10 = new SacoMoeda(11);
+		SacoMoeda saco11 = new SacoMoeda(51);
+		SacoMoeda saco13 = new SacoMoeda(84);
+		SacoMoeda saco14 = new SacoMoeda(96);
+		SacoMoeda saco15 = new SacoMoeda(96);
+		SacoMoeda saco16 = new SacoMoeda(20);
 
 		dindin.add(saco);
-		saco.setQuantidadeMoeda(90);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(3);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(96);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(92);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(2);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(90);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(50);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(50);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(33);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(20);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(51);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(84);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(96);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(96);
-		dindin.add(saco);
-		saco.setQuantidadeMoeda(11);
-		dindin.add(saco);
+		// saco.setQuantidadeMoeda(90);
+		dindin.add(saco1);
+		// saco.setQuantidadeMoeda(3);
+		dindin.add(saco2);
+		// saco.setQuantidadeMoeda(96);
+		dindin.add(saco3);
+		// saco.setQuantidadeMoeda(92);
+		dindin.add(saco4);
+		// saco.setQuantidadeMoeda(2);
+		dindin.add(saco5);
+		// saco.setQuantidadeMoeda(90);
+		dindin.add(saco6);
+		// saco.setQuantidadeMoeda(50);
+		dindin.add(saco7);
+		// saco.setQuantidadeMoeda(50);
+		dindin.add(saco8);
+		// saco.setQuantidadeMoeda(33);
+		dindin.add(saco9);
+		// saco.setQuantidadeMoeda(11);
+
+		dindin.add(saco10);
+		// saco.setQuantidadeMoeda(51);
+		dindin.add(saco11);
+		// saco.setQuantidadeMoeda(84);
+
+		// saco.setQuantidadeMoeda(96);
+		dindin.add(saco13);
+		// saco.setQuantidadeMoeda(96);
+		dindin.add(saco14);
+		// saco.setQuantidadeMoeda(20);
+		dindin.add(saco15);
+		dindin.add(saco16);
 	}
 
 	public void theAlgoritmoStar() {
@@ -312,8 +397,37 @@ public class Ambiente {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				System.out.print("| ");
-				System.out.print(base[i][j] + "\t");
+				if (base[i][j] == 0) {
+					System.out.print(" " + "\t");
+				} else if (base[i][j] == 1) {
+					System.out.print("=====" + "\t");
 
+				} else if (base[i][j] == 3) {
+					System.out.print("  O" + "\t");
+
+				} else if (base[i][j] == 4) {
+					System.out.print("  $" + "\t");
+
+				} else if (base[i][j] == 5) {
+					System.out.print(" BAU" + "\t");
+
+				} else if (base[i][j] == 6) {
+					System.out.print("PORTA" + "\t");
+
+				} else if (base[i][j] == 7) {
+					System.out.print("SPAWN" + "\t");
+
+				} else if (base[i][j] == 8) {
+					System.out.print("AGENT" + "\t");
+
+				} else if (base[i][j] == 9) {
+					System.out.print("+" + "\t");
+
+				}
+
+				else {
+					System.out.print(base[i][j] + "\t");
+				}
 				// mudar pra letras pra facilitar a leitura
 			}
 			System.out.println("");
