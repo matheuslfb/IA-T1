@@ -102,8 +102,10 @@ public class Ambiente {
 								base[i][j] = 5;
 							} else {
 								base[i][j] = 9;
+								viAge[i][j] =9;
 							}
 							base[i][j + 1] = 8;
+							
 							viAge[i][j + 1] = 8;
 							System.out.println("Agente andou para Direita");
 
@@ -123,6 +125,7 @@ public class Ambiente {
 								base[i][j] = 5;
 							} else {
 								base[i][j] = 9;
+								viAge[i][j] =9;
 							}
 
 							base[i][j - 1] = 8;
@@ -146,6 +149,7 @@ public class Ambiente {
 								base[i][j] = 5;
 							} else {
 								base[i][j] = 9;
+								viAge[i][j] =9;
 							}
 							base[i - 1][j] = 8;
 							viAge[i - 1][j] = 8;
@@ -160,27 +164,28 @@ public class Ambiente {
 						break;
 
 					}
-					// if (op.equals("b"))
+					if (op.equals("b"))
 
-					try {
-						if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd
-													// sai
-							base[i][j] = 5;
-						} else {
-							base[i][j] = 9;
+						try {
+							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd
+														// sai
+								base[i][j] = 5;
+							} else {
+								base[i][j] = 9;
+								viAge[i][j] =9;
+							}
+							base[i + 1][j] = 8;
+							viAge[i + 1][j] = 8;
+							System.out.println("Agente andou para Baixo");
+							verificador = true;
+							break;
+
+						} catch (Exception z) {
+							System.out.println("deu ruim");
+
+							break;
+
 						}
-						base[i + 1][j] = 8;
-						viAge[i + 1][j] = 8;
-						System.out.println("Agente andou para Baixo");
-						verificador = true;
-						break;
-
-					} catch (Exception z) {
-						System.out.println("deu ruim");
-
-						break;
-
-					}
 				}
 				if (verificador == true) {
 
