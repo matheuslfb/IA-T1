@@ -113,7 +113,7 @@ public class Ambiente {
 						}
 						verificador = true;
 					} catch (Exception e) {
-						System.out.println("deu ruim");
+						
 
 						break;
 
@@ -136,7 +136,7 @@ public class Ambiente {
 						}
 
 					} catch (Exception x) {
-						System.out.println("deu ruim");
+						
 
 						break;
 
@@ -159,7 +159,7 @@ public class Ambiente {
 						}
 						verificador = true;
 					} catch (Exception y) {
-						System.out.println("deu ruim");
+						
 
 						break;
 
@@ -181,8 +181,7 @@ public class Ambiente {
 							break;
 
 						} catch (Exception z) {
-							System.out.println("deu ruim");
-
+							
 							break;
 
 						}
