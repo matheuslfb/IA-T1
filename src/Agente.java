@@ -53,7 +53,7 @@ public class Agente {
 		// andar random
 		// se pegou todos os sacos
 		int cont = 0;
-		
+
 		do {
 			receberInfo();
 			printVisaoAgente(mapa);
@@ -64,7 +64,7 @@ public class Agente {
 			/*
 			 * if (contSacos == 16) { acabou = true; } } while (!acabou);
 			 */
-		} while (cont < 20);
+		} while (cont < 50);
 
 	}
 
@@ -78,7 +78,7 @@ public class Agente {
 	public static void receberInfo() {
 		// manda q quer receber o mapa
 		amb.observar(mapa);
-
+		infoMap();
 		// printVisaoAgente(mapa);
 
 		// recebe
@@ -309,7 +309,7 @@ public class Agente {
 					/////////////////////////////////////////////////
 
 					if (c9 == true && b9 == true && e9 == true && d9 == true) {
-						// se n tem caminho
+						// se n tem caminho em todas as voltas novo
 						val = r.nextInt(3);
 						if (val == 0) {
 							op = "c";
@@ -460,11 +460,20 @@ public class Agente {
 			System.out.println("");
 		}
 	}
+
+	public static void infoMap() {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (mapa[i][j] == 5) {
+					mapaAux[i][j] = 5;
+				}
+			}
+		}
+	}
+
 	public static void printMovimento(int base[][]) {
 
-		
-		
-		System.out.println("Movimento" );
+		System.out.println("Movimento");
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				System.out.print("| ");
