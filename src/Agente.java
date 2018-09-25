@@ -53,15 +53,18 @@ public class Agente {
 		// andar random
 		// se pegou todos os sacos
 		int cont = 0;
+		
 		do {
 			receberInfo();
-			analisar();
 			printVisaoAgente(mapa);
+			analisar();
+			printMovimento(mapa);
 			cont++;
 			System.out.println("----------------------------------------------------------------------------");
-
-			// } while (!acabou);
-		} while (cont < 10);
+			/*
+			 * if (contSacos == 16) { acabou = true; } } while (!acabou);
+			 */
+		} while (cont < 20);
 
 	}
 
@@ -76,7 +79,7 @@ public class Agente {
 		// manda q quer receber o mapa
 		amb.observar(mapa);
 
-		printVisaoAgente(mapa);
+		// printVisaoAgente(mapa);
 
 		// recebe
 		// marca no mapa
@@ -111,7 +114,7 @@ public class Agente {
 							if (mapa[i][j + 1] == 3) {// ve se te, buraco
 								pular("d");
 								pegaSaco();
-								
+
 							} else {
 								andar("d");
 							}
@@ -204,6 +207,7 @@ public class Agente {
 						if (mapa[i + 2][j] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
 							mapa[i + 2][j] = 0;
+
 						}
 						// valodr baixo 2
 						if (mapa[i + 2][j] == 4) {
@@ -217,20 +221,24 @@ public class Agente {
 						}
 					} catch (Exception e) {
 
-						nada = true; // se chegou aqui em todos os lugares em volta nao tem saco
 					}
-					if (nada = true) {
-						// random anda
-						andaRandom();
+					nada = true;
+					// random anda
+					andaRandom();
+					break;
+					// anda memoria
 
-						// anda memoria
-
-						break;
-					}
 				}
+				if (nada) {
+					break;
+				}
+			}
+			if (nada) {
+				break;
 			}
 
 		}
+
 	}
 
 	private static void andaRandom() {
@@ -245,7 +253,7 @@ public class Agente {
 		boolean b9 = false;
 		boolean e9 = false;
 		boolean d9 = false;
-
+		System.out.println("ANDOU RANDOM");
 		int val = 0;
 		boolean achou = false;
 
@@ -298,6 +306,8 @@ public class Agente {
 						c = false;
 						c9 = false;
 					}
+					/////////////////////////////////////////////////
+
 					if (c9 == true && b9 == true && e9 == true && d9 == true) {
 						// se n tem caminho
 						val = r.nextInt(3);
@@ -316,20 +326,25 @@ public class Agente {
 					} else if (c == true || b == true || e == true || d == true) {
 						// caminho random novo
 						achou = false;
+
 						do {
 							val = r.nextInt(3);
 							if (val == 0 && c == true) {
 								op = "c";
 								achou = true;
+								break;
 							} else if (val == 1 && b == true) {
 								op = "b";
 								achou = true;
+								break;
 							} else if (val == 2 && d == true) {
 								op = "d";
 								achou = true;
+								break;
 							} else {
 								op = "e";
 								achou = true;
+								break;
 							}
 
 						} while (!achou);
@@ -343,24 +358,32 @@ public class Agente {
 						if (val == 0 && (c == true || c9 == true)) {
 							op = "c";
 							achou = true;
+							break;
 						} else if (val == 1 && (b == true || b9 == true)) {
 							op = "b";
 							achou = true;
+							break;
 						} else if (val == 2 && (d == true || d9 == true)) {
 							op = "d";
 							achou = true;
+							break;
 						} else if (e == true || e9 == true) {
 							op = "e";
 							achou = true;
+							break;
 						}
 
 					} while (!achou);
-					amb.anda(op, mapa);
+					if (achou == true) {
+						amb.anda(op, mapa);
+					} else {
+						System.out.println("N ERA PRA TA AQUI");
+					}
 					// so random no q tiver caso esteja numa ponta e tudo for 9
 					break;
-				}
-			}
-		}
+				} // if
+			} // FOR
+		} // FOR
 	}
 
 	public static void pegaSaco() {
@@ -401,8 +424,81 @@ public class Agente {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
 				System.out.print("| ");
-				System.out.print(base[i][j] + "\t");
+				if (base[i][j] == 0) {
+					System.out.print(" " + "\t");
+				} else if (base[i][j] == 1) {
+					System.out.print("=====" + "\t");
 
+				} else if (base[i][j] == 3) {
+					System.out.print("  O" + "\t");
+
+				} else if (base[i][j] == 4) {
+					System.out.print("  $" + "\t");
+
+				} else if (base[i][j] == 5) {
+					System.out.print(" BAU" + "\t");
+
+				} else if (base[i][j] == 6) {
+					System.out.print("PORTA" + "\t");
+
+				} else if (base[i][j] == 7) {
+					System.out.print("SPAWN" + "\t");
+
+				} else if (base[i][j] == 8) {
+					System.out.print("AGENT" + "\t");
+
+				} else if (base[i][j] == 9) {
+					System.out.print("  +" + "\t");
+
+				}
+
+				else {
+					System.out.print(base[i][j] + "\t");
+				}
+				// mudar pra letras pra facilitar a leitura
+			}
+			System.out.println("");
+		}
+	}
+	public static void printMovimento(int base[][]) {
+
+		
+		
+		System.out.println("Movimento" );
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				System.out.print("| ");
+				if (base[i][j] == 0) {
+					System.out.print(" " + "\t");
+				} else if (base[i][j] == 1) {
+					System.out.print("=====" + "\t");
+
+				} else if (base[i][j] == 3) {
+					System.out.print("  O" + "\t");
+
+				} else if (base[i][j] == 4) {
+					System.out.print("  $" + "\t");
+
+				} else if (base[i][j] == 5) {
+					System.out.print(" BAU" + "\t");
+
+				} else if (base[i][j] == 6) {
+					System.out.print("PORTA" + "\t");
+
+				} else if (base[i][j] == 7) {
+					System.out.print("SPAWN" + "\t");
+
+				} else if (base[i][j] == 8) {
+					System.out.print("AGENT" + "\t");
+
+				} else if (base[i][j] == 9) {
+					System.out.print("  +" + "\t");
+
+				}
+
+				else {
+					System.out.print(base[i][j] + "\t");
+				}
 				// mudar pra letras pra facilitar a leitura
 			}
 			System.out.println("");
