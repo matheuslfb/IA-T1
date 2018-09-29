@@ -83,7 +83,7 @@ public class Ambiente {
 						viAge[i][j] = 9;
 						baseAux[i][j] = 9;// retira da aux que tem um saco ali
 						System.out.println("Pegou saco de dinheiro");
-						break;
+						return;
 					}
 				}
 			}
@@ -99,46 +99,44 @@ public class Ambiente {
 					try {
 						if (op.equals("d")) {
 							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
-								base[i][j] = 5;
+								base[i][j] = 9;
 							} else {
 								base[i][j] = 9;
-								viAge[i][j] =9;
+								viAge[i][j] = 9;
 							}
 							base[i][j + 1] = 8;
-							
+
 							viAge[i][j + 1] = 8;
 							System.out.println("Agente andou para Direita");
 
-							break;
+							return;
 						}
 						verificador = true;
 					} catch (Exception e) {
-						
 
-						break;
+						return;
 
 					}
 					try {
 						if (op.equals("e")) {
 
 							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd sai
-								base[i][j] = 5;
+								base[i][j] = 9;
 							} else {
 								base[i][j] = 9;
-								viAge[i][j] =9;
+								viAge[i][j] = 9;
 							}
 
 							base[i][j - 1] = 8;
 							viAge[i][j - 1] = 8;
 							System.out.println("Agente andou para Esquerda");
 
-							break;
+							return;
 						}
 
 					} catch (Exception x) {
-						
 
-						break;
+						return;
 
 					}
 					try {
@@ -146,22 +144,21 @@ public class Ambiente {
 
 							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd
 														// sai
-								base[i][j] = 5;
+								base[i][j] = 9;
 							} else {
 								base[i][j] = 9;
-								viAge[i][j] =9;
+								viAge[i][j] = 9;
 							}
 							base[i - 1][j] = 8;
 							viAge[i - 1][j] = 8;
 							System.out.println("Agente andou para Cima");
 
-							break;
+							return;
 						}
 						verificador = true;
 					} catch (Exception y) {
-						
 
-						break;
+						return;
 
 					}
 					if (op.equals("b"))
@@ -169,32 +166,32 @@ public class Ambiente {
 						try {
 							if (baseAux[i][j] == 5) {// se passou por cima de um bau ele continua sendo bau qnd
 														// sai
-								base[i][j] = 5;
+								base[i][j] = 9;
 							} else {
 								base[i][j] = 9;
-								viAge[i][j] =9;
+								viAge[i][j] = 9;
 							}
 							base[i + 1][j] = 8;
 							viAge[i + 1][j] = 8;
 							System.out.println("Agente andou para Baixo");
 							verificador = true;
-							break;
+							return;
 
 						} catch (Exception z) {
-							
-							break;
+
+							return;
 
 						}
 				}
 				if (verificador == true) {
 
-					break;
+					return;
 				}
 			}
 
 			if (verificador == true) {
 
-				break;
+				return;
 			}
 		}
 
@@ -282,7 +279,7 @@ public class Ambiente {
 						base[i][j + 2] = 8;
 						viAge[i][j + 2] = 8;
 						System.out.println("Agente pulou para Direita");
-						break;
+						return;
 					}
 					if (op.equals("e")) {
 
@@ -295,7 +292,7 @@ public class Ambiente {
 						base[i][j - 2] = 8;
 						viAge[i][j - 2] = 8;
 						System.out.println("Agente pulou para Esquerda");
-						break;
+						return;
 					}
 					if (op.equals("c")) {
 
@@ -307,7 +304,7 @@ public class Ambiente {
 						base[i - 2][j] = 8;
 						viAge[i - 2][j] = 8;
 						System.out.println("Agente pulou para Cima");
-						break;
+						return;
 					}
 					if (op.equals("b")) {
 
@@ -319,7 +316,7 @@ public class Ambiente {
 						base[i + 2][j] = 8;
 						viAge[i + 2][j] = 8;
 						System.out.println("Agente pulou para Baixo");
-						break;
+						return;
 					}
 				}
 
@@ -391,10 +388,7 @@ public class Ambiente {
 		dindin.add(saco16);
 	}
 
-	public void theAlgoritmoStar() {
-		// ESTRELA == MOV to bau mais proximo
-
-	}
+	
 
 	public void printAmbiente(int base[][]) {
 
