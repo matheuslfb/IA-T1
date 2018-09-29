@@ -15,19 +15,23 @@ public class Agente {
 	int dinheiro = 0;
 	boolean vivo = true;
 	static int[][] mapa = new int[10][10]; // usa pra andar
-	static int[][] mapaAux = new int[10][10]; // usa pra baus e sacos de dinheiro
-	static boolean acabou = false;
+	static int[][] mapaAux = new int[10][10]; // usa pra baus e buracos pro estrela
+	static boolean endgame = false;
+	static boolean earlygame = false;
 	static Ambiente amb = new Ambiente();
 	static int contAcoes = 0;
 	static int contBaus = 0;
 	static int contSacos = 0;
 	static boolean achouPorta = false;
 	static Random r = new Random();
+	
+	
 	// DECIDIR BASEADO NO QUE TEM EM VOLTA E MAPA
 
 	public static void main(String[] args) {
 		amb.GeraAmb();
 		amb.spawn();
+
 		idle();
 
 		System.out.println("----------------------------------------------------------------------------");
@@ -53,7 +57,7 @@ public class Agente {
 		// andar random
 		// se pegou todos os sacos
 		int cont = 0;
-
+		//criar outro do while aqui com ACABOU
 		do {
 			receberInfo();
 			printVisaoAgente(mapa);
@@ -61,11 +65,16 @@ public class Agente {
 			printMovimento(mapa);
 			cont++;
 			System.out.println("----------------------------------------------------------------------------");
-			/*
-			 * if (contSacos == 16) { acabou = true; } } while (!acabou);
-			 */
-		} while (cont < 50);
 
+			if (contSacos == 16 && contBaus == 4 && achouPorta == true) {
+				earlygame = true;
+			}
+		} while (!earlygame);
+	/*	System.out.println("Achou todos os sacos");
+		theAlgoritmoGen();
+		*/
+		
+		
 	}
 
 	public Agente(int dinheiro, boolean vivo, int[][] mapa) {
@@ -94,12 +103,13 @@ public class Agente {
 					try {
 						if (mapa[i][j + 1] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
+							mapaAux[i][j + 1] = 5;
 							mapa[i][j + 1] = 0;
 						}
 						if (mapa[i][j + 1] == 4) {
 							andar("d");
 							pegaSaco();
-							break;
+							return;
 						} // ve se tem buraco N agora
 					} catch (Exception e) {
 
@@ -109,6 +119,7 @@ public class Agente {
 						if (mapa[i][j + 2] == 4) {
 							if (mapa[i][j + 2] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 								contBaus++;
+								mapaAux[i][j + 2] = 5;
 								mapa[i][j + 2] = 0;
 							}
 							if (mapa[i][j + 1] == 3) {// ve se te, buraco
@@ -119,7 +130,7 @@ public class Agente {
 								andar("d");
 							}
 
-							break;
+							return;
 
 						}
 					} catch (Exception e) {
@@ -129,12 +140,13 @@ public class Agente {
 						// valodr esquerda 1
 						if (mapa[i][j - 1] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
+							mapaAux[i][j - 1] = 5;
 							mapa[i][j - 1] = 0;
 						}
 						if (mapa[i][j - 1] == 4) {
 							andar("e");
 							pegaSaco();
-							break;
+							return;
 						}
 					} catch (Exception e) {
 
@@ -143,6 +155,7 @@ public class Agente {
 						// valodr esquerda 2
 						if (mapa[i][j - 2] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
+							mapaAux[i][j - 2] = 5;
 							mapa[i][j - 2] = 0;
 						}
 						if (mapa[i][j - 2] == 4) {
@@ -152,7 +165,7 @@ public class Agente {
 							} else {
 								andar("e");
 							}
-							break;
+							return;
 						}
 					} catch (Exception e) {
 
@@ -160,13 +173,14 @@ public class Agente {
 					try {
 						if (mapa[i - 1][j] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
+							mapaAux[i - 1][j] = 5;
 							mapa[i - 1][j] = 0;
 						}
 						// valodr cima 1
 						if (mapa[i - 1][j] == 4) {
 							andar("c");
 							pegaSaco();
-							break;
+							return;
 						}
 					} catch (Exception e) {
 
@@ -174,6 +188,7 @@ public class Agente {
 					try {
 						if (mapa[i - 2][j] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
+							mapaAux[i - 2][j] = 5;
 							mapa[i - 2][j] = 0;
 						}
 						// valodr cima 2
@@ -184,28 +199,16 @@ public class Agente {
 							} else {
 								andar("c");
 							}
-							break;
+							return;
 						}
 					} catch (Exception e) {
 
 					}
-					try {
-						if (mapa[i + 1][j] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
-							contBaus++;
-							mapa[i + 1][j] = 0;
-						}
-						// valodr baixo 1
-						if (mapa[i + 1][j] == 4) {
-							andar("b");
-							pegaSaco();
-							break;
-						}
-					} catch (Exception e) {
 
-					}
 					try {
 						if (mapa[i + 2][j] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
 							contBaus++;
+							mapaAux[i + 2][j] = 5;
 							mapa[i + 2][j] = 0;
 
 						}
@@ -217,27 +220,69 @@ public class Agente {
 							} else {
 								andar("b");
 							}
-							break;
+							return;
 						}
 					} catch (Exception e) {
 
 					}
+					try {
+						if (mapa[i + 1][j] == 5) {// conta bau, remove da matriz normal, usa a aux pra analisar
+							contBaus++;
+							mapaAux[i + 1][j] = 5;
+							mapa[i + 1][j] = 0;
+						}
+						// valodr baixo 1
+						if (mapa[i + 1][j] == 4) {
+							andar("b");
+							pegaSaco();
+							return;
+						}
+					} catch (Exception e) {
+						andaRandom();
+						return;
+					}
 					nada = true;
-					// random anda
-					andaRandom();
-					break;
 					// anda memoria
 
+					// random anda
+					// andaRandom2();
+					andaRandom();
+					return;
 				}
 				if (nada) {
-					break;
+					return;
 				}
 			}
+
 			if (nada) {
-				break;
+				return;
 			}
 
 		}
+
+	}
+
+	private static int geraRandom() {
+
+		boolean okRandom = false;
+		int vari = 0;
+
+		// pega um random pra ver q lado vai
+		do {
+			int aleatorio = r.nextInt(4);
+			if (aleatorio == 0) {
+				vari = 0;
+			} else if (aleatorio == 1) {
+				vari = 1;
+			} else if (aleatorio == 2) {
+				vari = 2;
+			} else if (aleatorio == 3) {
+				vari = 3;
+			}
+
+		} while (okRandom == true);
+
+		return vari;
 
 	}
 
@@ -254,7 +299,7 @@ public class Agente {
 		boolean e9 = false;
 		boolean d9 = false;
 		System.out.println("ANDOU RANDOM");
-		int val = 0;
+		// int val = 0;
 		boolean achou = false;
 
 		for (int i = 0; i < 10; i++) {
@@ -264,6 +309,10 @@ public class Agente {
 					// tem 0 ou 9
 					// se for 0 vai random Prioridade
 					// se for 9 vai random se n tiver 0 em volta
+
+					// analisa em volta
+					// se nao andou lado = true
+					// se ja andou lado9 = true
 					try {
 						if (mapa[i][j + 1] == 0) {
 							d = true;
@@ -310,14 +359,14 @@ public class Agente {
 
 					if (c9 == true && b9 == true && e9 == true && d9 == true) {
 						// se n tem caminho em todas as voltas novo
-						val = r.nextInt(3);
+						int val = geraRandom();
 						if (val == 0) {
 							op = "c";
 						} else if (val == 1) {
 							op = "b";
 						} else if (val == 2) {
 							op = "d";
-						} else {
+						} else if (val == 3) {
 							op = "e";
 						}
 						amb.anda(op, mapa);
@@ -328,59 +377,67 @@ public class Agente {
 						achou = false;
 
 						do {
-							val = r.nextInt(3);
+							int val = geraRandom();
 							if (val == 0 && c == true) {
 								op = "c";
 								achou = true;
-								break;
+
 							} else if (val == 1 && b == true) {
 								op = "b";
 								achou = true;
-								break;
+
 							} else if (val == 2 && d == true) {
 								op = "d";
 								achou = true;
-								break;
-							} else {
+
+							} else if (val == 3 && e == true) {
 								op = "e";
 								achou = true;
-								break;
+
 							}
 
 						} while (!achou);
-						amb.anda(op, mapa);
-						break;
+						if (achou == true) {
+							System.out.println("Caminho Random novo");
+							amb.anda(op, mapa);
+							return;
+						} else {
+							System.out.println("vai pro extra");
+						}
 					}
 
 					achou = false;
 					do {
-						val = r.nextInt(3);
-						if (val == 0 && (c == true || c9 == true)) {
+						int val = geraRandom();
+						if (val == 0 && (c9 == true)) {
 							op = "c";
 							achou = true;
-							break;
-						} else if (val == 1 && (b == true || b9 == true)) {
+
+						} else if (val == 1 && (b9 == true)) {
 							op = "b";
 							achou = true;
-							break;
-						} else if (val == 2 && (d == true || d9 == true)) {
+
+						} else if (val == 2 && (d9 == true)) {
 							op = "d";
 							achou = true;
-							break;
-						} else if (e == true || e9 == true) {
+
+						} else if (val == 3 && (e9 == true)) {
 							op = "e";
 							achou = true;
-							break;
+
 						}
 
 					} while (!achou);
 					if (achou == true) {
+						System.out.println("Caminho random extra");
 						amb.anda(op, mapa);
+						return;
 					} else {
 						System.out.println("N ERA PRA TA AQUI");
 					}
+
 					// so random no q tiver caso esteja numa ponta e tudo for 9
-					break;
+					return;
 				} // if
 			} // FOR
 		} // FOR
@@ -402,6 +459,8 @@ public class Agente {
 	public static void theAlgoritmoGen() {
 		// GENETICO == decide quanto dividir em cada bau
 		// se conhece os 4 baus e a saida
+		
+		//
 	}
 
 	public static int qntDindin() {
@@ -466,6 +525,18 @@ public class Agente {
 			for (int j = 0; j < 10; j++) {
 				if (mapa[i][j] == 5) {
 					mapaAux[i][j] = 5;
+				}
+				if (mapa[i][j] == 3) {
+					mapaAux[i][j] = 3;
+				}
+				if (mapa[i][j] == 1) {
+					mapaAux[i][j] = 1;
+				}
+				if (mapa[i][j] == 2) {
+					mapaAux[i][j] = 2;
+				}
+				if (mapa[i][j] == 6) {
+					mapaAux[i][j] = 6;
 				}
 			}
 		}
