@@ -60,6 +60,13 @@ public class Ambiente {
 		return val;
 	}
 
+	// cheat pra pegar todos os sacos (pra testar o genetico e o estrela)
+	public void idkfa(ArrayList<SacoMoeda> dindinAux) {
+		for (int i = 0; i < dindin.size(); i++) {
+			dindinAux.add(dindin.get(i));
+		}
+	}
+
 	public void pegaSaco(int[][] viAge, ArrayList<SacoMoeda> dindinAux) {
 		// olha a posicao do amigo
 		// ve se tem saco na aux
@@ -387,8 +394,6 @@ public class Ambiente {
 		dindin.add(saco15);
 		dindin.add(saco16);
 	}
-
-	
 
 	public void printAmbiente(int base[][]) {
 
