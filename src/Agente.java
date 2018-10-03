@@ -29,6 +29,7 @@ public class Agente {
 	static int geneticoTot = 0; // print do genetico total
 	static ArrayList<BauG> listaBaus = new ArrayList<>();// genetico
 	static ArrayList<SolucoesG> solucoes = new ArrayList<>();// genentico
+	static ArrayList<SolucoesG> solucoesTemp = new ArrayList<>();// genentico
 
 	// DECIDIR BASEADO NO QUE TEM EM VOLTA E MAPA
 
@@ -102,23 +103,99 @@ public class Agente {
 		}
 		// ###Populacao
 		// DO
-		System.out.println("APTIDAO");
-		
-		int resp = adptar(); //pos 0 - 1 - 2 - 3 - 4
-		if(resp == -1 || resp !=0) {
-			//
+		// apdtidao
+		boolean acabou = false;
+		boolean achou = false;
+		int limiteGen = 100;
+
+		do {
+			int resp = adptar(); // pos 0 - 1 - 2 - 3 - 4
+			if (resp == -1) {
+				// pega posicao random pra usar
+				resp = randPos();
+			}
+			int respVal = solucoes.get(resp).calculaDiferenca();
+
+			if (respVal != 0) {
+				// a melhor opcao nao encontra a resposta
+
+				// melhor opcao que nao encontra a resposta
+				// eletizar
+				System.out.println("eletizar");
+				// pega o melhor(ou random caso if de cima) e bota na temp
+				solucoesTemp.add(solucoes.get(resp));
+				solucoesTemp.get(0).printSolucao();
+				// torneio
+
+				System.out.println("torneio");
+				torneio(solucoes, solucoesTemp);
+				break;
+				// reproduzir
+				// mutar
+
+			} else if (respVal == 0) {
+				// a melhor opca encontra a resposta
+				// para tudo e salva as paradas
+				achou = true;
+				solucoesTemp.clear();
+				solucoesTemp.add(solucoes.get(resp));
+
+			}
+		} while (!achou || !acabou);
+
+		if (achou) {
+			System.out.println("achou resposta alg genetico");
+			starAlg();
+		} else {
+			System.out.println("nao achou resposta em " + limiteGen + " iteracoes do genetico");
+			solucoesTemp.get(0).printSolucao();
 		}
+	}
 
-		/*
-		 * if solucao encontrada /fim = true /sai do loop
-		 * 
-		 * else { selecao(); Reproducao(); Mutacao();
-		 * 
-		 * }
-		 * 
-		 * 
-		 */
+	private static void torneio(ArrayList<SolucoesG> sol, ArrayList<SolucoesG> solT) {
+		// analisa o tamanho minimo e max dos baus de cada solucao
+		// se max for 1
+		// n faz nada so sai
+		// se for 2 pega o bau q tiver mais de um saco b1b2 | b3b4 e troca se esta
+		// b1oub2 vai pra b3oub4 vice versa
+		// se for 3 -------- msm coisa b1b2 |b3b4 so q agora troca sempre a pos 2
+		// se for 4 -------- msm coisa b1b2 |b3b4 so que troca pos 1 e 3
 
+		for (int i = 0; i < sol.size(); i++) {
+			if (sol.get(i).maxTam() == 2) {
+				sol.get(i).gen2();
+			} else if (sol.get(i).maxTam() == 3) {
+				sol.get(i).gen3();
+			} else if (sol.get(i).maxTam() == 4) {
+				System.out.println("torn 4");
+				sol.get(i).gen4();
+				System.out.println("saiu");
+			}
+		}
+	}
+
+	public static int randPos() {
+		boolean okRandom = false;
+		int vari = 0;
+
+		// pega um random pra pos random do genentico
+		do {
+			int aleatorio = r.nextInt(5);
+			if (aleatorio == 0) {
+				vari = 0;
+			} else if (aleatorio == 1) {
+				vari = 1;
+			} else if (aleatorio == 2) {
+				vari = 2;
+			} else if (aleatorio == 3) {
+				vari = 3;
+			} else if (aleatorio == 4) {
+				vari = 4;
+			}
+
+		} while (okRandom == true);
+
+		return vari;
 	}
 
 	public static int adptar() {
@@ -144,6 +221,13 @@ public class Agente {
 		din2.clear();
 		for (int i = 0; i < din1.size(); i++) {
 			din2.add(din1.get(i));
+		}
+	}
+
+	public static void cloneSoluG(ArrayList<SolucoesG> sol1, ArrayList<SolucoesG> sol2) {
+		sol2.clear();
+		for (int i = 0; i < sol1.size(); i++) {
+			sol2.add(sol1.get(i));
 		}
 	}
 
@@ -225,332 +309,8 @@ public class Agente {
 		solucoes.add(sol1);
 	}
 
-	public static void popular() {
-		/*
-		 * for (int i = 0; i < dindin.size(); i++) { dindinTemp.add(dindin.get(i)); }
-		 */
-		int tam = 5;
-		SolucoesG sol1 = new SolucoesG();
-		SolucoesG sol2 = new SolucoesG();
-		SolucoesG sol3 = new SolucoesG();
-		SolucoesG sol4 = new SolucoesG();
-		SolucoesG sol5 = new SolucoesG();
-		int totDiv4 = dindin.size() / 4;
-
-		// pra cada solucao
-		// pegapega dindinTemp
-		// pega total de itens /4
-		// coloca totDiv4 de itens em cada bau
-		BauG bau1 = new BauG();
-		BauG bau2 = new BauG();
-		BauG bau3 = new BauG();
-		BauG bau4 = new BauG();
-		sol1.baus.add(bau1);
-		sol1.baus.add(bau2);
-		sol1.baus.add(bau3);
-		sol1.baus.add(bau4);
-
-		// sol 1
-		amb.idkfa(dindin);
-		for (int i = 0; i < dindin.size(); i++) {
-			if (totDiv4 == 1) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-
-			} else if (totDiv4 == 2) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-				}
-			} else if (totDiv4 == 3) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			} else if (totDiv4 == 4) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			}
-
-		} // if sol 1
-		amb.idkfa(dindin);
-
-		// sol 2
-		for (int i = 0; i < dindin.size(); i++) {
-			if (totDiv4 == 1) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-
-			} else if (totDiv4 == 2) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-				}
-			} else if (totDiv4 == 3) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			} else if (totDiv4 == 4) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol2.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			}
-
-		} // if sol2
-		amb.idkfa(dindin);
-
-		// sol 3
-		for (int i = 0; i < dindin.size(); i++) {
-			if (totDiv4 == 1) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-
-			} else if (totDiv4 == 2) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-				}
-			} else if (totDiv4 == 3) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			} else if (totDiv4 == 4) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol3.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			}
-
-		} // if sol 3
-		amb.idkfa(dindin);
-
-		// sol 4
-		for (int i = 0; i < dindin.size(); i++) {
-			if (totDiv4 == 1) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-
-			} else if (totDiv4 == 2) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-				}
-			} else if (totDiv4 == 3) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			} else if (totDiv4 == 4) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol4.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			}
-
-		} // if sol 4
-		amb.idkfa(dindin);
-
-		// sol 5
-		for (int i = 0; i < dindin.size(); i++) {
-			if (totDiv4 == 1) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-
-			} else if (totDiv4 == 2) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-				}
-			} else if (totDiv4 == 3) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			} else if (totDiv4 == 4) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol5.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindinTemp.get(val));
-
-				}
-			}
-
-		} // if sol 5
-
-		// supostamente gerou 5 solucoes
-		solucoes.add(sol1);
-		solucoes.add(sol2);
-		solucoes.add(sol3);
-		solucoes.add(sol4);
-		solucoes.add(sol5);
+	private static void starAlg() {
+		// TODO Auto-generated method stub
 
 	}
 

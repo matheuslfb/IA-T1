@@ -10,7 +10,7 @@ public class Gerador {
 			for (int i = 0; i < base.length; i++) {
 				base[0][i] = 1;
 			}
-			base[0][ran.nextInt(base.length)] = 6; // garante que a saida vai estar em no paredÃ£o
+			base[0][ran.nextInt(base.length)] = 6; // garante que a saida vai estar em no paredão
 		}
 		if (op == 1) {// preenche a direita
 			for (int i = 0; i < base.length; i++) {
