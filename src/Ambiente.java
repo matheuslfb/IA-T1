@@ -60,10 +60,24 @@ public class Ambiente {
 		return val;
 	}
 
-	// cheat pra pegar todos os sacos (pra testar o genetico e o estrela)
+	// cheat pra pegar todos os sacos (pra testar o genetico)
 	public void idkfa(ArrayList<SacoMoeda> dindinAux) {
 		for (int i = 0; i < dindin.size(); i++) {
 			dindinAux.add(dindin.get(i));
+		}
+	}
+
+	// cheat pra mostrar todo o mapa (menos os dinheiros) (pra testar o estrela)
+	public void iddt(int[][] viAge) {
+		for (int i = 0; i < viAge.length; i++) {
+			for (int j = 0; j < viAge.length; j++) {
+				if (base[i][j] == 4) {
+					viAge[i][j] = 0;
+				} else {
+					viAge[i][j] = base[i][j];
+				}
+
+			}
 		}
 	}
 
