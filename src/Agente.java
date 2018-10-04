@@ -36,6 +36,7 @@ public class Agente {
 	static int bau1 = 0;
 	static int bau2 = 0;
 	static int bau3 = 0;
+	static boolean gg = false;
 	// DECIDIR BASEADO NO QUE TEM EM VOLTA E MAPA
 
 	public static void main(String[] args) {
@@ -98,15 +99,24 @@ public class Agente {
 popular3();
 		printPopulacao();
 
-		for (int i = 0; i < 150; i++) {
+		int i = 0;
+		// for (int i = 0; i < 1500; i++) {
+		do {
 			System.out.println("Geracao " + i);
 			aptidar(populacao);
-			printPopulacao();
+			printPopulacao(populacao);
 
-			//elitizar(populacao, populacaoTemp);
+			elitizar(populacao, populacaoTemp);
 
-			//gerar(populacao, populacaoTemp);
-		}
+			gerar(populacao, populacaoTemp);
+			mutacao();
+			analisa();
+			i++;
+		} while (!gg);
+		// editar o pop1 e fazer q nem o 2
+		System.out.println("pop final");
+		
+		printPopulacao(populacao);
 		// editar o p
 		for (int i = 0; i < 5; i++) {
 			popular2();
@@ -169,42 +179,52 @@ popular3();
 		}
 	}
 
-	private static void gerar(int[][] populacao2, int[][] populacaoTemp2) {
+		private static void gerar(int[][] populacao2, int[][] populacaoTemp2) {
 		// TODO Auto-generated method stub
+
+		// em vez de 8 faz com metade do valor
+
 		int linha = 0;
 		for (int i = 0; i < 2; i++) {
 			int pai = torner(populacao2);
 			int mae = torner(populacao2);
 			linha++;
-			for (int j = 0; j < 5; j++) {
+			for (int j = 0; j < 8; j++) {
 				populacaoTemp2[linha][j] = populacao2[pai][j];
 				populacaoTemp2[linha + 1][j] = populacao2[mae][j];
 			}
-			for (int j = 5; j < 10; j++) {
+			for (int j = 8; j < 16; j++) {
 				populacaoTemp2[linha][j] = populacao2[mae][j];
 				populacaoTemp2[linha + 1][j] = populacao2[pai][j];
 			}
 			linha++;
 		}
 		clonar(populacao2, populacaoTemp2);
+
 	}
 
-	static int torner(int[][] populacao) {
+	static int torner(int[][] populacao2) {
 		Random r = new Random();
 		int primeiro = r.nextInt(4);
 		int segundo = r.nextInt(4);
-		return (populacao[primeiro][16] < populacao[segundo][16]) ? primeiro : segundo;
+		return (populacao2[primeiro][16] > populacao2[segundo][16]) ? primeiro : segundo;
+	}
+
+	static void analisa() {
+		if (populacao[0][16] == 4) {
+			gg = true;
+		}
 	}
 
 	private static void elitizar(int[][] populacao2, int[][] populacaoTemp2) {
 		// TODO Auto-generated method stub
-		int indexMenor = 0;
+		int indexMaior = 0;
 		for (int i = 0; i < 5; i++) {
-			if (populacao2[i][16] < populacao2[indexMenor][16]) {
-				indexMenor = i;
+			if (populacao2[i][16] > populacao2[indexMaior][16]) {
+				indexMaior = i;
 			}
 		}
-		clonarElet(populacaoTemp2[0], populacao2[indexMenor]);
+		clonarElet(populacaoTemp2[0], populacao2[indexMaior]);
 	}
 
 	static void clonar(int[][] destino, int[][] origem) {
@@ -232,13 +252,13 @@ popular3();
 					bau0 += dindin.get(j).getQuantidadeMoeda();
 				}
 				if (populacao2[i][j] == 1) {
-					bau0 += dindin.get(j).getQuantidadeMoeda();
+					bau1 += dindin.get(j).getQuantidadeMoeda();
 				}
 				if (populacao2[i][j] == 2) {
-					bau0 += dindin.get(j).getQuantidadeMoeda();
+					bau2 += dindin.get(j).getQuantidadeMoeda();
 				}
 				if (populacao2[i][j] == 3) {
-					bau0 += dindin.get(j).getQuantidadeMoeda();
+					bau3 += dindin.get(j).getQuantidadeMoeda();
 				}
 				// populacao[i][15] += (populacao[i][j]==1) ? dindin.get(j).getQuantidadeMoeda()
 				// : -carga[j] ;
@@ -257,15 +277,19 @@ popular3();
 			if (total / 4 == bau3) {
 				cont++;
 			}
-			populacao2[i][16]=cont;
+			bau0 = 0;
+			bau1 = 0;
+			bau2 = 0;
+			bau3 = 0;
+			populacao2[i][16] = cont;
 		}
 	}
 
-	private static void printPopulacao() {
+	private static void printPopulacao(int[][] populacao2) {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 17; j++) {
-				System.out.print(populacao[i][j] + " ");
+				System.out.print(populacao2[i][j] + " ");
 			}
 			System.out.println("");
 		}
