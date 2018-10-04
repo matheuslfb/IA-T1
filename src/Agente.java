@@ -49,10 +49,10 @@ public class Agente {
 	public static void main(String[] args) {
 		amb.GeraAmb();
 		amb.spawn();
-
-		// idle();
-		// idleGenetico();
-		idleStar();
+		//descomentar o que for usar e comentar o que nao for
+		idle();
+		//idleGenetico();
+		//idleStar();
 		System.out.println("----------------------------------------------------------------------------");
 
 	}
@@ -77,7 +77,7 @@ public class Agente {
 			cont++;
 			System.out.println("----------------------------------------------------------------------------");
 			// algo estrnaho aqui
-			if (contSacos == 10 && contBaus == 4 && achouPorta == true) {
+			if (contSacos > 12 && contBaus >= 4 && achouPorta == true || contSacos > 12 && contBaus ==0 && achouPorta == true ) {
 				System.out.println("Achou todos os sacos");
 				earlygame = true;
 			}
@@ -105,7 +105,7 @@ public class Agente {
 
 		// analisa
 		starAnalisa(objX, objY, agX, agY);
-		System.out.println("x A: " + agX + " y A: " + agY + " x O: " + objX + " y O: " + objX);
+
 	}
 
 	static void starAnalisa(int objX, int objY, int agX, int agY) {
@@ -122,9 +122,7 @@ public class Agente {
 				if (mapaAux[i][j] == 8) {
 					agAuxX = i;
 					agAuxY = j;
-					System.out.println("achou Agente");
-					System.out.println("agx " + agAuxX);
-					System.out.println("agy " + agAuxY);
+
 					break;
 				}
 			}
@@ -140,9 +138,7 @@ public class Agente {
 				if (mapaAux[i][j] == 5) {
 					distXMa = i;
 					distYMa = j;
-					System.out.println("achou obj qqr");
-					System.out.println("objx " + distXMa);
-					System.out.println("objy " + distYMa);
+
 				}
 			}
 		}
@@ -157,9 +153,7 @@ public class Agente {
 						oAuxy = j;
 						distXMa = distX;
 						distYMa = distY;
-						System.out.println("achou obj mais proximo");
-						System.out.println("objx " + oAuxX);
-						System.out.println("objy " + oAuxy);
+
 					}
 
 				}
@@ -170,10 +164,34 @@ public class Agente {
 
 		objX = oAuxX;
 		objY = oAuxy;
+		System.out.println("agx " + agAuxX);
+		System.out.println("agy " + agAuxY);
+		System.out.println("objx " + oAuxX);
+		System.out.println("objy " + oAuxy);
+
+		// verifica qual caminho vai fazer estar mais proximo do obj
+		int h = funcaoh(mapaAux, agX, agY, objX, objY);
+		int g = funcaog(mapaAux, agX, agY, objX, objY);
 
 	}
 
 	// #####Star
+
+	private static int funcaog(int[][] mapaAux2, int agX, int agY, int objX, int objY) {
+		// se eu for pra g quanto vai custar o H
+		return 0;
+	}
+
+	private static int funcaoh(int[][] mapaAux2, int agX, int agY, int objX, int objY) {
+		// qnt custa pra ir pro H
+		int distX = agX - objX;
+		int distY = agY - objY;
+		int vai =0;
+		
+		//if(distX)
+		//quitei
+		return 0;
+	}
 
 	// #####genetico
 	public static void idleStar() {
