@@ -27,35 +27,34 @@ public class Agente {
 	static Random r = new Random();
 	static int geneticoVer = 0; // print do genetico de cada vez
 	static int geneticoTot = 0; // print do genetico total
-	static ArrayList<BauG> listaBaus = new ArrayList<>();// genetico
-	static ArrayList<SolucoesG> solucoes = new ArrayList<>();// genentico
-	static ArrayList<SolucoesG> solucoesTemp = new ArrayList<>();// genentico
-	static int[][] populacao = new int[5][17];
-	static int[][] populacaoTemp = new int[5][17];
+	/*
+	 * static ArrayList<BauG> listaBaus = new ArrayList<>();// genetico static
+	 * ArrayList<SolucoesG> solucoes = new ArrayList<>();// genentico static
+	 * ArrayList<SolucoesG> solucoesTemp = new ArrayList<>();// genentico
+	 */
 	static int bau0 = 0;
 	static int bau1 = 0;
 	static int bau2 = 0;
 	static int bau3 = 0;
 	static boolean gg = false;
+
+	static int qntPops = 49;// MUDAR gerar()++ primeiro for o valor pra o q estiver aqui div/2(considerando
+							// 0 ) -1
+	static int tamanhoPop = 0;
+	static int[][] populacao = new int[qntPops][17];
+	static int[][] populacaoTemp = new int[qntPops][17];
+
 	// DECIDIR BASEADO NO QUE TEM EM VOLTA E MAPA
 
 	public static void main(String[] args) {
 		amb.GeraAmb();
 		amb.spawn();
 
-		idle();
-
+		// idle();
+		// idleGenetico();
+		idleStar();
 		System.out.println("----------------------------------------------------------------------------");
 
-		/*
-		 * receberInfo();
-		 * 
-		 * analisar();
-		 * 
-		 * printVisaoAgente(mapa); receberInfo(); analisar();
-		 * 
-		 * printVisaoAgente(mapa);
-		 */
 	}
 
 	public static void idle() {
@@ -69,17 +68,132 @@ public class Agente {
 		// se pegou todos os sacos
 		int cont = 0;
 		// criar outro do while aqui com ACABOU
-		/*
-		 * do { receberInfo(); printVisaoAgente(mapa); analisar(); printMovimento(mapa);
-		 * cont++; System.out.println(
-		 * "----------------------------------------------------------------------------"
-		 * );
-		 * 
-		 * if (contSacos == 16 && contBaus == 4 && achouPorta == true) { earlygame =
-		 * true; } } while (!earlygame);
-		 */
+
+		do {
+			receberInfo();
+			printVisaoAgente(mapa);
+			analisar();
+			printMovimento(mapa);
+			cont++;
+			System.out.println("----------------------------------------------------------------------------");
+			// algo estrnaho aqui
+			if (contSacos == 10 && contBaus == 4 && achouPorta == true) {
+				System.out.println("Achou todos os sacos");
+				earlygame = true;
+			}
+		} while (!earlygame);
+
 		System.out.println("Achou todos os sacos");
-		amb.idkfa(dindin);
+
+		for (int i = 0; i < dindin.size(); i++) {
+			System.out.println(dindin.get(i).getQuantidadeMoeda());
+		}
+
+		// theAlgoritmoGen();
+		starAlg();
+
+	}
+
+	// #####Star
+	private static void starAlg() {
+		System.out.println("ixtrela");
+		// analisa as distancias entre o agente e todos os baus e a porta
+		int objX = 0;// linha
+		int objY = 0;// coluna
+		int agX = 0;
+		int agY = 0;
+
+		// analisa
+		starAnalisa(objX, objY, agX, agY);
+		System.out.println("x A: " + agX + " y A: " + agY + " x O: " + objX + " y O: " + objX);
+	}
+
+	static void starAnalisa(int objX, int objY, int agX, int agY) {
+		// acha player
+
+		int agAuxX = 0;
+		int agAuxY = 0;
+
+		int oAuxX = 0;
+		int oAuxy = 0;
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (mapaAux[i][j] == 8) {
+					agAuxX = i;
+					agAuxY = j;
+					System.out.println("achou Agente");
+					System.out.println("agx " + agAuxX);
+					System.out.println("agy " + agAuxY);
+					break;
+				}
+			}
+		}
+
+		int distX = 0;
+		int distY = 0;
+		int distXMa = 0;
+		int distYMa = 0;
+		// so marca uma pos pra dps ver qual eh a primeira q aparece
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (mapaAux[i][j] == 5) {
+					distXMa = i;
+					distYMa = j;
+					System.out.println("achou obj qqr");
+					System.out.println("objx " + distXMa);
+					System.out.println("objy " + distYMa);
+				}
+			}
+		}
+		// agora tem uma base ve qual bau ta mais proximo
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (mapaAux[i][j] == 5) {
+					distX = agX - i;
+					distY = agY - j;
+					if (distX < distXMa && distY < distYMa) {
+						oAuxX = i;
+						oAuxy = j;
+						distXMa = distX;
+						distYMa = distY;
+						System.out.println("achou obj mais proximo");
+						System.out.println("objx " + oAuxX);
+						System.out.println("objy " + oAuxy);
+					}
+
+				}
+			}
+		}
+		agX = agAuxX;
+		agY = agAuxY;
+
+		objX = oAuxX;
+		objY = oAuxy;
+
+	}
+
+	// #####Star
+
+	// #####genetico
+	public static void idleStar() {
+		// roda so o genentico so pra ver
+		int cont = 0;
+
+		System.out.println("Achou todos os sacos");
+		amb.iddt(mapaAux);// cheat
+		printVisaoAgente(mapaAux);
+
+		starAlg();
+
+	}
+
+	public static void idleGenetico() {
+		// roda so o genentico so pra ver
+		int cont = 0;
+
+		System.out.println("Achou todos os sacos");
+		amb.idkfa(dindin);// cheat
 		for (int i = 0; i < dindin.size(); i++) {
 			System.out.println(dindin.get(i).getQuantidadeMoeda());
 		}
@@ -92,100 +206,53 @@ public class Agente {
 		// GENETICO == decide quanto dividir em cada bau
 		// se conhece os 4 baus e a saida
 		geneticoVer = 0;
-		System.out.println("Genetico x: " + geneticoVer);
 
 		// ###inicia populacao
 		// base
-popular3();
-		printPopulacao();
+		int ger = 0;
+		popular3(populacao);
+		printPopulacao(populacao);
+		System.out.println("  ");
+		System.out.println("  ");
+		tamanhoPop = dindin.size();
 
 		int i = 0;
-		// for (int i = 0; i < 1500; i++) {
+		// for (int i = 0; i < 50; i++) {
 		do {
-			System.out.println("Geracao " + i);
+			System.out.println("geracao " + ger);
 			aptidar(populacao);
-			printPopulacao(populacao);
 
 			elitizar(populacao, populacaoTemp);
 
 			gerar(populacao, populacaoTemp);
-			mutacao();
-			analisa();
+
+			mutacao(populacao);
+			// mutacaoGOD(populacao);
+			analisa(populacao);
+			analisa(populacaoTemp);
+			printPopulacao(populacao);
+			System.out.println(" ");
 			i++;
+			ger++;
 		} while (!gg);
+		// }
 		// editar o pop1 e fazer q nem o 2
 		System.out.println("pop final");
-		
+
 		printPopulacao(populacao);
-		// editar o p
-		for (int i = 0; i < 5; i++) {
-			popular2();
-		}
-		// editar o pop1 e fazer q nem o 2
 
-		for (int i = 0; i < solucoes.size(); i++) {
-			System.out.println("Solucao :" + i);
-			solucoes.get(i).printSolucao();
-			System.out.println("------------");
-		}
-		// ###Populacao
-		// DO
-		// apdtidao
-		boolean acabou = false;
-		boolean achou = false;
-		int limiteGen = 100;
-
-		do {
-			int resp = adptar(); // pos 0 - 1 - 2 - 3 - 4
-			if (resp == -1) {
-				// pega posicao random pra usar
-				resp = randPos();
-			}
-			int respVal = solucoes.get(resp).calculaDiferenca();
-
-			if (respVal != 0) {
-				// a melhor opcao nao encontra a resposta
-
-				// melhor opcao que nao encontra a resposta
-				// eletizar
-				System.out.println("eletizar");
-				// pega o melhor(ou random caso if de cima) e bota na temp
-				solucoesTemp.add(solucoes.get(resp));
-				solucoesTemp.get(0).printSolucao();
-				// torneio
-
-				System.out.println("torneio");
-				torneio(solucoes, solucoesTemp);
-				break;
-				// reproduzir
-				// mutar
-
-			} else if (respVal == 0) {
-				// a melhor opca encontra a resposta
-				// para tudo e salva as paradas
-				achou = true;
-				solucoesTemp.clear();
-				solucoesTemp.add(solucoes.get(resp));
-
-			}
-		} while (!achou || !acabou);
-
-		if (achou) {
-			System.out.println("achou resposta alg genetico");
-			starAlg();
-		} else {
-			System.out.println("nao achou resposta em " + limiteGen + " iteracoes do genetico");
-			solucoesTemp.get(0).printSolucao();
-		}
 	}
 
-		private static void gerar(int[][] populacao2, int[][] populacaoTemp2) {
-		// TODO Auto-generated method stub
+	static void gerar(int[][] populacao2, int[][] populacaoTemp2) {
+		//
 
 		// em vez de 8 faz com metade do valor
 
 		int linha = 0;
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 24; i++) {
+			// o limite desse for muda depende do tam da pop --> qntPop/2)- mas nao pode ser
+			// esse calculo pq buga
+			// tem q ser o numero a dedo
 			int pai = torner(populacao2);
 			int mae = torner(populacao2);
 			linha++;
@@ -199,27 +266,87 @@ popular3();
 			}
 			linha++;
 		}
+		// clonar(populacaoTemp2, populacao2);// inverti
 		clonar(populacao2, populacaoTemp2);
 
 	}
 
 	static int torner(int[][] populacao2) {
-		Random r = new Random();
-		int primeiro = r.nextInt(4);
-		int segundo = r.nextInt(4);
+
+		int primeiro = 0;
+		int segundo = 0;
+		do {
+			primeiro = ranTorner();
+			segundo = ranTorner();
+		} while (primeiro != segundo);
 		return (populacao2[primeiro][16] > populacao2[segundo][16]) ? primeiro : segundo;
 	}
 
-	static void analisa() {
-		if (populacao[0][16] == 4) {
-			gg = true;
-		}
+	static int ranTorner() {
+		int val = r.nextInt(qntPops);
+		return val;
 	}
 
-	private static void elitizar(int[][] populacao2, int[][] populacaoTemp2) {
-		// TODO Auto-generated method stub
+	static void mutacao(int[][] populacao2) {
+		//
+		Random ale = new Random();
+		int mChance = 0;
+		int mPosicao = 0;
+		int mBau = 0;
+		for (int i = 1; i < qntPops; i++) {
+			mChance = ale.nextInt(100);
+			if (mChance <= 5) {// chance de mutar on
+				mPosicao = ale.nextInt(16);// passsar tamanho certo dps
+				mBau = pegaRandomMenosX(populacao2[i][mPosicao]);// troca o bau por outro
+				populacao2[i][mPosicao] = mBau;
+				System.out.println("Mutou " + i + " Pos " + mPosicao + " pra " + mBau);
+			}
+		}
+
+	}
+
+	static void mutacaoGOD(int[][] populacao2) {
+		//
+		Random ale = new Random();
+		int mChance = 0;
+		int mPosicao = 0;
+		int mBau = 0;
+		mChance = ale.nextInt(100);
+		if (mChance <= 5) {
+			for (int i = 1; i < qntPops; i++) {
+				// chance de mutar on
+				mPosicao = ale.nextInt(16);// passsar tamanho certo dps
+				mBau = pegaRandomMenosX(populacao2[i][mPosicao]);// troca o bau por outro
+				populacao2[i][mPosicao] = mBau;
+				System.out.println("Mutou " + i + " Pos " + mPosicao + " pra " + mBau);
+			}
+		}
+
+	}
+
+	static int pegaRandomMenosX(int x) {
+		Random ale = new Random();
+		int val = 0;
+		do {
+			val = ale.nextInt(4);
+		} while (val == x);
+		return val;
+	}
+
+	static void analisa(int[][] populacao2) {
+		for (int i = 0; i < qntPops; i++) {
+			if (populacao2[i][16] == 4) {
+				gg = true;
+				break;
+			}
+		}
+
+	}
+
+	static void elitizar(int[][] populacao2, int[][] populacaoTemp2) {
+		//
 		int indexMaior = 0;
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < qntPops; i++) {
 			if (populacao2[i][16] > populacao2[indexMaior][16]) {
 				indexMaior = i;
 			}
@@ -228,8 +355,8 @@ popular3();
 	}
 
 	static void clonar(int[][] destino, int[][] origem) {
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 17; j++) {
+		for (int i = 0; i < qntPops; i++) {
+			for (int j = 0; j < 16; j++) {
 				destino[i][j] = origem[i][j];
 			}
 		}
@@ -241,9 +368,9 @@ popular3();
 		}
 	}
 
-	private static void aptidar(int[][] populacao2) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < 5; i++) {
+	static void aptidar(int[][] populacao2) {
+
+		for (int i = 0; i < qntPops; i++) {
 			populacao2[i][16] = 0;
 			int cont = 0;
 			for (int j = 0; j < 16; j++) {
@@ -264,19 +391,30 @@ popular3();
 				// : -carga[j] ;
 			}
 			// populacao[i][15] = Math.abs(populacao[i][15]);
-			int total = bau0 + bau1 + bau2 + bau3;
-			if (total / 4 == bau0) {
+			// int total = bau0 + bau1 + bau2 + bau3;
+			// System.out.println("total "+ total);
+			if (bau0 - bau1 == 0 && bau0 != 0) {
 				cont++;
 			}
-			if (total / 4 == bau1) {
+			if (bau0 - bau2 == 0 && bau0 != 0) {
 				cont++;
 			}
-			if (total / 4 == bau2) {
+			if (bau0 - bau3 == 0 && bau0 != 0) {
 				cont++;
 			}
-			if (total / 4 == bau3) {
+			if (bau1 - bau2 == 0 && bau1 != 0) {
 				cont++;
 			}
+			if (bau1 - bau3 == 0 && bau1 != 0) {
+				cont++;
+			}
+			if (bau2 - bau3 == 0 && bau2 != 0) {
+				cont++;
+			}
+			/*
+			 * if (total / 4 == bau1) { cont++; } if (total / 4 == bau2) { cont++; } if
+			 * (total / 4 == bau3) { cont++; }
+			 */
 			bau0 = 0;
 			bau1 = 0;
 			bau2 = 0;
@@ -285,47 +423,29 @@ popular3();
 		}
 	}
 
-	private static void printPopulacao(int[][] populacao2) {
-		// TODO Auto-generated method stub
-		for (int i = 0; i < 5; i++) {
+	static void printPopulacao(int[][] populacao2) {
+
+		for (int i = 0; i < qntPops; i++) {
 			for (int j = 0; j < 17; j++) {
-				System.out.print(populacao2[i][j] + " ");
+				if (j == 17) {
+					System.out.print("H: " + populacao2[i][j] + " ");
+				} else {
+					System.out.print(populacao2[i][j] + " ");
+				}
 			}
 			System.out.println("");
 		}
 	}
 
-	private static void popular3() {
-		// TODO Auto-generated method stub
+	static void popular3(int[][] populacao2) {
+
 		Random ra = new Random();
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < dindin.size(); j++) {
-				populacao[i][j] = ra.nextInt(4);
+		for (int i = 0; i < qntPops; i++) {
+			for (int j = 0; j < 16; j++) {
+				populacao2[i][j] = ra.nextInt(4);
 			}
 		}
 
-	}
-
-	private static void torneio(ArrayList<SolucoesG> sol, ArrayList<SolucoesG> solT) {
-		// analisa o tamanho minimo e max dos baus de cada solucao
-		// se max for 1
-		// n faz nada so sai
-		// se for 2 pega o bau q tiver mais de um saco b1b2 | b3b4 e troca se esta
-		// b1oub2 vai pra b3oub4 vice versa
-		// se for 3 -------- msm coisa b1b2 |b3b4 so q agora troca sempre a pos 2
-		// se for 4 -------- msm coisa b1b2 |b3b4 so que troca pos 1 e 3
-
-		for (int i = 0; i < sol.size(); i++) {
-			if (sol.get(i).maxTam() == 2) {
-				sol.get(i).gen2();
-			} else if (sol.get(i).maxTam() == 3) {
-				sol.get(i).gen3();
-			} else if (sol.get(i).maxTam() == 4) {
-				System.out.println("torn 4");
-				sol.get(i).gen4();
-				System.out.println("saiu");
-			}
-		}
 	}
 
 	public static int randPos() {
@@ -352,25 +472,6 @@ popular3();
 		return vari;
 	}
 
-	public static int adptar() {
-		// verifica a valor de cada bau
-		// diferenca mais proxima de 0
-		// entre todos os baus eh o melhor
-		System.out.println("calcula");
-		for (int i = 0; i < solucoes.size(); i++) {
-			solucoes.get(i).printDif();
-		}
-		int pos = -1;
-		int aux = solucoes.get(0).calculaDiferenca();
-		for (int i = 0; i < solucoes.size(); i++) {
-			if (solucoes.get(i).calculaDiferenca() < aux) {
-				pos = i;
-				aux = solucoes.get(i).calculaDiferenca();
-			}
-		}
-		return pos;
-	}
-
 	public static void cloneDindin(ArrayList<SacoMoeda> din1, ArrayList<SacoMoeda> din2) {
 		din2.clear();
 		for (int i = 0; i < din1.size(); i++) {
@@ -386,89 +487,10 @@ popular3();
 	}
 
 	// #####genetico
-	public static void popular2() {
-
-		cloneDindin(dindin, dindinTemp);
-
-		SolucoesG sol1 = new SolucoesG();
-		int totDiv4 = dindin.size() / 4;
-		BauG bau1 = new BauG();
-		BauG bau2 = new BauG();
-		BauG bau3 = new BauG();
-		BauG bau4 = new BauG();
-		sol1.baus.add(bau1);
-		sol1.baus.add(bau2);
-		sol1.baus.add(bau3);
-		sol1.baus.add(bau4);
-
-		// sol 1
-		for (int i = 0; i < dindin.size(); i++) {
-			if (totDiv4 == 1) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-
-			} else if (totDiv4 == 2) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-				}
-			} else if (totDiv4 == 3) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			} else if (totDiv4 == 4) {
-				for (int j = 0; j < 4; j++) {
-					int val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-					val = r.nextInt(dindin.size());
-					sol1.baus.get(j).Saco.add(dindin.get(val));
-					dindin.remove(dindin.get(val));
-
-				}
-			}
-
-		} // if sol 1
-		cloneDindin(dindinTemp, dindin);
-
-		solucoes.add(sol1);
-	}
-
-	private static void starAlg() {
-		// TODO Auto-generated method stub
-
-	}
 
 	// #####genetico
+
+	// #####Agente
 	public Agente(int dinheiro, boolean vivo, int[][] mapa) {
 
 		this.dinheiro = dinheiro;
@@ -498,6 +520,11 @@ popular3();
 							mapaAux[i][j + 1] = 5;
 							mapa[i][j + 1] = 0;
 						}
+						if (mapa[i][j + 1] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i][j + 1] = 6;
+							mapa[i][j + 1] = 1;
+						}
 						if (mapa[i][j + 1] == 4) {
 							andar("d");
 							pegaSaco();
@@ -513,6 +540,11 @@ popular3();
 								contBaus++;
 								mapaAux[i][j + 2] = 5;
 								mapa[i][j + 2] = 0;
+							}
+							if (mapa[i][j + 2] == 6) {// porta
+								achouPorta = true;
+								mapaAux[i][j + 2] = 6;
+								mapa[i][j + 2] = 1;
 							}
 							if (mapa[i][j + 1] == 3) {// ve se te, buraco
 								pular("d");
@@ -535,6 +567,11 @@ popular3();
 							mapaAux[i][j - 1] = 5;
 							mapa[i][j - 1] = 0;
 						}
+						if (mapa[i][j - 1] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i][j - 1] = 6;
+							mapa[i][j - 1] = 1;
+						}
 						if (mapa[i][j - 1] == 4) {
 							andar("e");
 							pegaSaco();
@@ -549,6 +586,11 @@ popular3();
 							contBaus++;
 							mapaAux[i][j - 2] = 5;
 							mapa[i][j - 2] = 0;
+						}
+						if (mapa[i][j - 2] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i][j - 2] = 6;
+							mapa[i][j - 2] = 1;
 						}
 						if (mapa[i][j - 2] == 4) {
 							if (mapa[i][j - 1] == 3) {// ve se te, buraco
@@ -568,6 +610,11 @@ popular3();
 							mapaAux[i - 1][j] = 5;
 							mapa[i - 1][j] = 0;
 						}
+						if (mapa[i - 1][j] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i - 1][j] = 6;
+							mapa[i - 1][j] = 1;
+						}
 						// valodr cima 1
 						if (mapa[i - 1][j] == 4) {
 							andar("c");
@@ -582,6 +629,11 @@ popular3();
 							contBaus++;
 							mapaAux[i - 2][j] = 5;
 							mapa[i - 2][j] = 0;
+						}
+						if (mapa[i - 2][j] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i - 2][j] = 6;
+							mapa[i - 2][j] = 1;
 						}
 						// valodr cima 2
 						if (mapa[i - 2][j] == 4) {
@@ -604,6 +656,11 @@ popular3();
 							mapa[i + 2][j] = 0;
 
 						}
+						if (mapa[i + 2][j] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i + 2][j] = 6;
+							mapa[i + 2][j] = 1;
+						}
 						// valodr baixo 2
 						if (mapa[i + 2][j] == 4) {
 							if (mapa[i + 1][j] == 3) {// ve se te, buraco
@@ -622,6 +679,11 @@ popular3();
 							contBaus++;
 							mapaAux[i + 1][j] = 5;
 							mapa[i + 1][j] = 0;
+						}
+						if (mapa[i + 1][j] == 6) {// porta
+							achouPorta = true;
+							mapaAux[i + 1][j] = 6;
+							mapa[i + 1][j] = 1;
 						}
 						// valodr baixo 1
 						if (mapa[i + 1][j] == 4) {
@@ -969,5 +1031,5 @@ popular3();
 			System.out.println("");
 		}
 	}
-
+	// #####Agente
 }
