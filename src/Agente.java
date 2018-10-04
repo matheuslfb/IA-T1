@@ -30,7 +30,12 @@ public class Agente {
 	static ArrayList<BauG> listaBaus = new ArrayList<>();// genetico
 	static ArrayList<SolucoesG> solucoes = new ArrayList<>();// genentico
 	static ArrayList<SolucoesG> solucoesTemp = new ArrayList<>();// genentico
-
+	static int[][] populacao = new int[5][17];
+	static int[][] populacaoTemp = new int[5][17];
+	static int bau0 = 0;
+	static int bau1 = 0;
+	static int bau2 = 0;
+	static int bau3 = 0;
 	// DECIDIR BASEADO NO QUE TEM EM VOLTA E MAPA
 
 	public static void main(String[] args) {
@@ -90,7 +95,19 @@ public class Agente {
 
 		// ###inicia populacao
 		// base
+popular3();
+		printPopulacao();
 
+		for (int i = 0; i < 150; i++) {
+			System.out.println("Geracao " + i);
+			aptidar(populacao);
+			printPopulacao();
+
+			//elitizar(populacao, populacaoTemp);
+
+			//gerar(populacao, populacaoTemp);
+		}
+		// editar o p
 		for (int i = 0; i < 5; i++) {
 			popular2();
 		}
@@ -150,6 +167,119 @@ public class Agente {
 			System.out.println("nao achou resposta em " + limiteGen + " iteracoes do genetico");
 			solucoesTemp.get(0).printSolucao();
 		}
+	}
+
+	private static void gerar(int[][] populacao2, int[][] populacaoTemp2) {
+		// TODO Auto-generated method stub
+		int linha = 0;
+		for (int i = 0; i < 2; i++) {
+			int pai = torner(populacao2);
+			int mae = torner(populacao2);
+			linha++;
+			for (int j = 0; j < 5; j++) {
+				populacaoTemp2[linha][j] = populacao2[pai][j];
+				populacaoTemp2[linha + 1][j] = populacao2[mae][j];
+			}
+			for (int j = 5; j < 10; j++) {
+				populacaoTemp2[linha][j] = populacao2[mae][j];
+				populacaoTemp2[linha + 1][j] = populacao2[pai][j];
+			}
+			linha++;
+		}
+		clonar(populacao2, populacaoTemp2);
+	}
+
+	static int torner(int[][] populacao) {
+		Random r = new Random();
+		int primeiro = r.nextInt(4);
+		int segundo = r.nextInt(4);
+		return (populacao[primeiro][16] < populacao[segundo][16]) ? primeiro : segundo;
+	}
+
+	private static void elitizar(int[][] populacao2, int[][] populacaoTemp2) {
+		// TODO Auto-generated method stub
+		int indexMenor = 0;
+		for (int i = 0; i < 5; i++) {
+			if (populacao2[i][16] < populacao2[indexMenor][16]) {
+				indexMenor = i;
+			}
+		}
+		clonarElet(populacaoTemp2[0], populacao2[indexMenor]);
+	}
+
+	static void clonar(int[][] destino, int[][] origem) {
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 17; j++) {
+				destino[i][j] = origem[i][j];
+			}
+		}
+	}
+
+	static void clonarElet(int[] destino, int[] origem) {
+		for (int j = 0; j < 17; j++) {
+			destino[j] = origem[j];
+		}
+	}
+
+	private static void aptidar(int[][] populacao2) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < 5; i++) {
+			populacao2[i][16] = 0;
+			int cont = 0;
+			for (int j = 0; j < 16; j++) {
+				// verificar so com
+				if (populacao2[i][j] == 0) {
+					bau0 += dindin.get(j).getQuantidadeMoeda();
+				}
+				if (populacao2[i][j] == 1) {
+					bau0 += dindin.get(j).getQuantidadeMoeda();
+				}
+				if (populacao2[i][j] == 2) {
+					bau0 += dindin.get(j).getQuantidadeMoeda();
+				}
+				if (populacao2[i][j] == 3) {
+					bau0 += dindin.get(j).getQuantidadeMoeda();
+				}
+				// populacao[i][15] += (populacao[i][j]==1) ? dindin.get(j).getQuantidadeMoeda()
+				// : -carga[j] ;
+			}
+			// populacao[i][15] = Math.abs(populacao[i][15]);
+			int total = bau0 + bau1 + bau2 + bau3;
+			if (total / 4 == bau0) {
+				cont++;
+			}
+			if (total / 4 == bau1) {
+				cont++;
+			}
+			if (total / 4 == bau2) {
+				cont++;
+			}
+			if (total / 4 == bau3) {
+				cont++;
+			}
+			populacao2[i][16]=cont;
+		}
+	}
+
+	private static void printPopulacao() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 17; j++) {
+				System.out.print(populacao[i][j] + " ");
+			}
+			System.out.println("");
+		}
+	}
+
+	private static void popular3() {
+		// TODO Auto-generated method stub
+		Random ra = new Random();
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < dindin.size(); j++) {
+				populacao[i][j] = ra.nextInt(4);
+			}
+		}
+
 	}
 
 	private static void torneio(ArrayList<SolucoesG> sol, ArrayList<SolucoesG> solT) {
